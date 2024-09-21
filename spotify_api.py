@@ -23,13 +23,6 @@ def generate_random_string(length: int) -> string:
     characters = string.ascii_letters + string.digits  # includes both uppercase, lowercase, and digits
     return ''.join(random.choice(characters) for _ in range(length))
 
-# TODO: remove if the static method in helpers works
-def generate_b64_encoded_string(plain_string: string) -> string:
-    string_bytes = plain_string.encode()
-    string_bytes_b64 = base64.b64encode(string_bytes)
-    string_b64_encoded = string_bytes_b64.decode()
-    return string_b64_encoded
-
 # Endpoints
 @app.route('/', methods=['GET'])
 def status():
