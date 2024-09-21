@@ -53,3 +53,12 @@ Follow these instructions to start up the backend
     `python3 spotify_api.py`
 
 
+## Credit for Assets Used
+Spotify Icon:
+"https://www.flaticon.com/free-icons/spotify-sketch" Spotify sketch icons created by Fathema Khanom - Flaticon
+
+Error Icon:
+"https://www.flaticon.com/free-icons/close" close icons created by Alfredo Hernandez - Flaticon
+
+
+

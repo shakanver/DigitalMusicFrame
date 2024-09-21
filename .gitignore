@@ -1,0 +1,6 @@
+# Environment variable files
+**/.env
+# Python Cache
+**/__pycache__/**
+# Dynamically generated album art assets
+assets/album_art.png
