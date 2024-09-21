@@ -81,6 +81,8 @@ class AlbumArtGUI(QWidget):
                 self.album_art_path = "./assets/close.png"
                 self.song_title = "ERROR"
                 self.artist_name = str(he)
+        except requests.exceptions.ConnectionError as ce:
+                print(f"WARNING: connection error encountered\n{str(ce)}\nre-establishin connection")
 
 # Run the application
 if __name__ == '__main__':
