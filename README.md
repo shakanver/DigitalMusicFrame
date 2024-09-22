@@ -70,11 +70,7 @@ Follow these instructions to start up the backend
     NOTE:
     when its your first time authenticating, you'll be redirected to a browser page from spotify, asking if you to authorize your spotify app to access your data. And then it will return the token data as expected
 
-4. Once you've logged in an gotten the token, you can close the login app spotify_api.py, and run the gui app 'album_art_gui.py'. you will be prompted to enter the token and refresh token you were provided with from step 3. Then, you should see the app start which looks like this:
-
-![alt text](image.png)
-
-
+4. Once you've logged in an gotten the token, you can close the login app spotify_api.py, and run the gui app 'album_art_gui.py'. you will be prompted to enter the token and refresh token you were provided with from step 3. Then, you should see the app start.
 
 ## Credit for Assets Used
 All assets used in this project were accessed from FlatIcon:
