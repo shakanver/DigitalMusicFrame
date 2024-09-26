@@ -13,6 +13,11 @@ class AlbumArtGUI(QWidget):
         super().__init__()
         self.spotify_api_helpers = spotify_api_helpers
 
+        # set titles
+        self.title = ""
+        self.subtitle = ""
+        self.second_subtitle = ""
+
         # Set window properties
         self.setWindowTitle('Album Art GUI')
         self.setGeometry(100, 100, 400, 600)
@@ -28,15 +33,29 @@ class AlbumArtGUI(QWidget):
         self.album_art.setAlignment(Qt.AlignCenter)
         self.layout.addWidget(self.album_art)
 
-        # Add song name, artist, and album text (centered)
-        self.song_info = QLabel(self)
-        self.song_info.setStyleSheet("color: white;")
-        self.song_info.setFont(QFont('Arial', 14))
-        self.song_info.setAlignment(Qt.AlignCenter)
-        self.layout.addWidget(self.song_info)
+        # Add song name (title) label
+        self.title = QLabel(self)
+        self.title.setStyleSheet("color: white;")
+        self.title.setAlignment(Qt.AlignCenter)
+        self.layout.addWidget(self.title)
+
+        # Add artist name label
+        self.subtitle = QLabel(self)
+        self.subtitle.setStyleSheet("color: white;")
+        self.subtitle.setAlignment(Qt.AlignCenter)
+        self.layout.addWidget(self.subtitle)
+
+        # Add album name label
+        self.second_subtitle = QLabel(self)
+        self.second_subtitle.setStyleSheet("color: white;")
+        self.second_subtitle.setAlignment(Qt.AlignCenter)
+        self.layout.addWidget(self.second_subtitle)
 
         # Set the layout for the widget
         self.setLayout(self.layout)
+
+        # Initialize pixmap object, which will store album art
+        self.current_pixmap = QPixmap()
 
         # Create a timer to update the album art and song info every second, by querying the API
         self.timer = QTimer(self)
@@ -100,12 +119,55 @@ class AlbumArtGUI(QWidget):
     def _set_album_art_and_text(self, album_art_path, title='', subtitle='', second_subtitle=''):
         # Update the album art
         pixmap = QPixmap(album_art_path)
-        pixmap = pixmap.scaled(300, 300, Qt.KeepAspectRatio)
+        pixmap = pixmap.scaled(640, 640, Qt.KeepAspectRatio)
         self.album_art.setPixmap(pixmap)
+        self.current_pixmap = pixmap
 
         # Update the song info text
-        song_text = f"{title}\n{subtitle}\n{second_subtitle}"
-        self.song_info.setText(song_text)
+        self.title.setText(title)
+        self.subtitle.setText(subtitle)
+        self.second_subtitle.setText(second_subtitle)
+
+        # Resize the gui elements
+        #TODO: figure out if we need this or not
+        # self._resize_album_art()
+
+    def resizeEvent(self, event):
+        # When the window is resized, resize the album art and text accordingly
+        self._resize_album_art()
+        self._adjust_text_sizes()
+
+        # Call the base class's resizeEvent
+        super().resizeEvent(event)
+
+    #TODO: implement
+    def _resize_album_art(self):
+        if not self.current_pixmap.isNull():  # Check if the pixmap is valid
+            # Get the current window size
+            window_width = self.width()
+            window_height = self.height()
+
+            # Scale the image to fit the window size
+            scaled_pixmap = self.current_pixmap.scaled(int(window_width * 0.7), int(window_height * 0.7), Qt.KeepAspectRatio)
+            self.album_art.setPixmap(scaled_pixmap)
+
+    #TODO: implement
+    def _adjust_text_sizes(self):
+        # Get the window dimensions
+        window_height = self.height()
+
+        # Adjust the font sizes based on window height
+        # Song title gets the largest font size
+        title_font_size = int(window_height * 0.05)  # 5% of window height
+        self.title.setFont(QFont('Arial', title_font_size))
+
+        # Song artist gets a medium font size
+        artist_font_size = int(window_height * 0.035)  # 3.5% of window height
+        self.subtitle.setFont(QFont('Arial', artist_font_size))
+
+        # Album name gets the smallest font size
+        album_font_size = int(window_height * 0.03)  # 3% of window height
+        self.second_subtitle.setFont(QFont('Arial', album_font_size))
 
 # Run the application
 if __name__ == '__main__':
