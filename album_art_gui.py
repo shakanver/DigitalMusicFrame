@@ -128,10 +128,6 @@ class AlbumArtGUI(QWidget):
         self.subtitle.setText(subtitle)
         self.second_subtitle.setText(second_subtitle)
 
-        # Resize the gui elements
-        #TODO: figure out if we need this or not
-        # self._resize_album_art()
-
     def resizeEvent(self, event):
         # When the window is resized, resize the album art and text accordingly
         self._resize_album_art()
@@ -140,7 +136,6 @@ class AlbumArtGUI(QWidget):
         # Call the base class's resizeEvent
         super().resizeEvent(event)
 
-    #TODO: implement
     def _resize_album_art(self):
         if not self.current_pixmap.isNull():  # Check if the pixmap is valid
             # Get the current window size
@@ -151,7 +146,6 @@ class AlbumArtGUI(QWidget):
             scaled_pixmap = self.current_pixmap.scaled(int(window_width * 0.7), int(window_height * 0.7), Qt.KeepAspectRatio)
             self.album_art.setPixmap(scaled_pixmap)
 
-    #TODO: implement
     def _adjust_text_sizes(self):
         # Get the window dimensions
         window_height = self.height()
@@ -159,15 +153,15 @@ class AlbumArtGUI(QWidget):
         # Adjust the font sizes based on window height
         # Song title gets the largest font size
         title_font_size = int(window_height * 0.05)  # 5% of window height
-        self.title.setFont(QFont('Arial', title_font_size))
+        self.title.setFont(QFont('Verdana', title_font_size))
 
         # Song artist gets a medium font size
         artist_font_size = int(window_height * 0.035)  # 3.5% of window height
-        self.subtitle.setFont(QFont('Arial', artist_font_size))
+        self.subtitle.setFont(QFont('Verdana', artist_font_size))
 
         # Album name gets the smallest font size
         album_font_size = int(window_height * 0.03)  # 3% of window height
-        self.second_subtitle.setFont(QFont('Arial', album_font_size))
+        self.second_subtitle.setFont(QFont('Verdana', album_font_size))
 
 # Run the application
 if __name__ == '__main__':
