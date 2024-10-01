@@ -54,13 +54,10 @@ class AlbumArtGUI(QWidget):
         # Set the layout for the widget
         self.setLayout(self.layout)
 
-        # Initialize pixmap object, which will store album art
-        self.current_pixmap = QPixmap()
-
         # Create a timer to update the album art and song info every second, by querying the API
         self.timer = QTimer(self)
         self.timer.timeout.connect(self.update_ui)
-        self.timer.start(1000) #update UI every 5 seconds
+        self.timer.start(1000) #update UI every second
 
         # Initial load of data
         self.update_ui()
@@ -119,32 +116,22 @@ class AlbumArtGUI(QWidget):
     def _set_album_art_and_text(self, album_art_path, title='', subtitle='', second_subtitle=''):
         # Update the album art
         pixmap = QPixmap(album_art_path)
-        pixmap = pixmap.scaled(640, 640, Qt.KeepAspectRatio)
+        pixmap = pixmap.scaled(int(self.width() * 0.8), int(self.height() * 0.8), Qt.KeepAspectRatio)
         self.album_art.setPixmap(pixmap)
-        self.current_pixmap = pixmap
 
         # Update the song info text
         self.title.setText(title)
         self.subtitle.setText(subtitle)
         self.second_subtitle.setText(second_subtitle)
+        # self._adjust_text_sizes()
 
-    def resizeEvent(self, event):
-        # When the window is resized, resize the album art and text accordingly
-        self._resize_album_art()
-        self._adjust_text_sizes()
+        self._show_screen_dimensions()
 
-        # Call the base class's resizeEvent
-        super().resizeEvent(event)
+    def _show_screen_dimensions(self):
+        screen = QApplication.primaryScreen()
+        dpi = screen.physicalDotsPerInch()
 
-    def _resize_album_art(self):
-        if not self.current_pixmap.isNull():  # Check if the pixmap is valid
-            # Get the current window size
-            window_width = self.width()
-            window_height = self.height()
-
-            # Scale the image to fit the window size
-            scaled_pixmap = self.current_pixmap.scaled(int(window_width * 0.7), int(window_height * 0.7), Qt.KeepAspectRatio)
-            self.album_art.setPixmap(scaled_pixmap)
+        print(f"Screen Width (Inches): {self.width()/dpi} | Screen Height (Inches): {self.height()/dpi}")
 
     def _adjust_text_sizes(self):
         # Get the window dimensions
