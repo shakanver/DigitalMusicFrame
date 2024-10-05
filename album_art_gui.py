@@ -136,7 +136,12 @@ class AlbumArtGUI(QWidget):
         screen = QApplication.primaryScreen()
         dpi = screen.physicalDotsPerInch()
 
-        print(f"Screen Width (Inches): {self.width()/dpi} | Screen Height (Inches): {self.height()/dpi}")
+        print(f"Screen Width: {self.width()/dpi} Inches | Screen Height: {self.height()/dpi} Inches")
+        print(f"Album Art Width: {self.album_art.width()/dpi} Inches | Album Art Height: {self.album_art.height()/dpi} Inches")
+        print(f"Title Size: {self.title.size()}")
+        print(f"Subtitle Size: {self.subtitle.size()}")
+        print(f"Title Size: {self.second_subtitle.size()}")
+        
 
     def _adjust_text_sizes(self):
         # Get the window dimensions
