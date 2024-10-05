@@ -140,19 +140,19 @@ class AlbumArtGUI(QWidget):
 
     def _adjust_text_sizes(self):
         # Get the window dimensions
-        window_height = self.height()
+        album_art_width = self.album_art.width()
 
         # Adjust the font sizes based on window height
         # Song title gets the largest font size
-        title_font_size = int(window_height * 0.05)  # 5% of window height
+        title_font_size = int(album_art_width * 0.05)  # 5% of window height
         self.title.setFont(QFont('Verdana', title_font_size))
 
         # Song artist gets a medium font size
-        artist_font_size = int(window_height * 0.035)  # 3.5% of window height
+        artist_font_size = int(album_art_width * 0.035)  # 3.5% of window height
         self.subtitle.setFont(QFont('Verdana', artist_font_size))
 
         # Album name gets the smallest font size
-        album_font_size = int(window_height * 0.03)  # 3% of window height
+        album_font_size = int(album_art_width * 0.03)  # 3% of window height
         self.second_subtitle.setFont(QFont('Verdana', album_font_size))
 
 # Run the application
