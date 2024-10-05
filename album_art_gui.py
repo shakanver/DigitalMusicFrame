@@ -1,12 +1,13 @@
 import requests
 import sys
 from PyQt5.QtWidgets import QApplication, QWidget, QVBoxLayout, QLabel
-from PyQt5.QtGui import QPixmap, QFont
+from PyQt5.QtGui import QPixmap, QFont, QFontDatabase
 from PyQt5.QtCore import Qt, QTimer
 from io import BytesIO
 from PIL import Image
 from spotify_api_helpers import SpotifyAPIHelpers
 from typing import Tuple
+import os
 
 class AlbumArtGUI(QWidget):
     def __init__(self, spotify_api_helpers):
@@ -17,6 +18,10 @@ class AlbumArtGUI(QWidget):
         self.title = ""
         self.subtitle = ""
         self.second_subtitle = ""
+
+        # Load the font we want to use
+        self.font_id = QFontDatabase.addApplicationFont(os.path.join(os.getcwd(), "assets", "Roboto-Bold.ttf"))
+        self.font_family = QFontDatabase.applicationFontFamilies(self.font_id)[0]
 
         # Set window properties
         self.setWindowTitle('Album Art GUI')
@@ -121,7 +126,7 @@ class AlbumArtGUI(QWidget):
     def _set_album_art_and_text(self, album_art_path, title='', subtitle='', second_subtitle=''):
         # Update the album art
         pixmap = QPixmap(album_art_path)
-        pixmap = pixmap.scaled(int(self.width() * 0.8), int(self.height() * 0.8), Qt.KeepAspectRatio)
+        pixmap = pixmap.scaled(int(self.width() * 0.8), int(self.height() * 0.9), Qt.KeepAspectRatio)
         self.album_art.setPixmap(pixmap)
 
         # Update the song info text
@@ -150,15 +155,15 @@ class AlbumArtGUI(QWidget):
         # Adjust the font sizes based on window height
         # Song title gets the largest font size
         title_font_size = int(album_art_width * 0.05)  # 5% of window height
-        self.title.setFont(QFont('Verdana', title_font_size))
+        self.title.setFont(QFont(self.font_family, title_font_size))
 
         # Song artist gets a medium font size
         artist_font_size = int(album_art_width * 0.035)  # 3.5% of window height
-        self.subtitle.setFont(QFont('Verdana', artist_font_size))
+        self.subtitle.setFont(QFont(self.font_family, artist_font_size))
 
         # Album name gets the smallest font size
         album_font_size = int(album_art_width * 0.03)  # 3% of window height
-        self.second_subtitle.setFont(QFont('Verdana', album_font_size))
+        self.second_subtitle.setFont(QFont(self.font_family, album_font_size))
 
 # Run the application
 if __name__ == '__main__':
