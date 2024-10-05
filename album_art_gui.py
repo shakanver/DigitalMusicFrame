@@ -25,34 +25,39 @@ class AlbumArtGUI(QWidget):
         # Set background color to black
         self.setStyleSheet("background-color: black;")
 
-        # Create a layout
-        self.layout = QVBoxLayout()
+        # Create a main layout
+        self.main_layout = QVBoxLayout()
+        self.setLayout(self.main_layout)
+
+        # Create album art container
+        self.album_container = QVBoxLayout()
+        self.album_container.setAlignment(Qt.AlignCenter)
 
         # Add album art (centered)
         self.album_art = QLabel(self)
         self.album_art.setAlignment(Qt.AlignCenter)
-        self.layout.addWidget(self.album_art)
+        self.album_container.addWidget(self.album_art)
 
         # Add song name (title) label
         self.title = QLabel(self)
         self.title.setStyleSheet("color: white;")
         self.title.setAlignment(Qt.AlignCenter)
-        self.layout.addWidget(self.title)
+        self.album_container.addWidget(self.title)
 
         # Add artist name label
         self.subtitle = QLabel(self)
         self.subtitle.setStyleSheet("color: white;")
         self.subtitle.setAlignment(Qt.AlignCenter)
-        self.layout.addWidget(self.subtitle)
+        self.album_container.addWidget(self.subtitle)
 
         # Add album name label
         self.second_subtitle = QLabel(self)
         self.second_subtitle.setStyleSheet("color: white;")
         self.second_subtitle.setAlignment(Qt.AlignCenter)
-        self.layout.addWidget(self.second_subtitle)
+        self.album_container.addWidget(self.second_subtitle)
 
         # Set the layout for the widget
-        self.setLayout(self.layout)
+        self.main_layout.addLayout(self.album_container)
 
         # Create a timer to update the album art and song info every second, by querying the API
         self.timer = QTimer(self)
@@ -123,7 +128,7 @@ class AlbumArtGUI(QWidget):
         self.title.setText(title)
         self.subtitle.setText(subtitle)
         self.second_subtitle.setText(second_subtitle)
-        # self._adjust_text_sizes()
+        self._adjust_text_sizes()
 
         self._show_screen_dimensions()
 
