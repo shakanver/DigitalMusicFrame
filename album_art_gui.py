@@ -1,17 +1,27 @@
 import requests
 import sys
 from PyQt5.QtWidgets import QApplication, QWidget, QVBoxLayout, QLabel
-from PyQt5.QtGui import QPixmap, QFont
+from PyQt5.QtGui import QPixmap, QFont, QFontDatabase
 from PyQt5.QtCore import Qt, QTimer
 from io import BytesIO
 from PIL import Image
 from spotify_api_helpers import SpotifyAPIHelpers
 from typing import Tuple
+import os
 
 class AlbumArtGUI(QWidget):
     def __init__(self, spotify_api_helpers):
         super().__init__()
         self.spotify_api_helpers = spotify_api_helpers
+
+        # set titles
+        self.title = ""
+        self.subtitle = ""
+        self.second_subtitle = ""
+
+        # Load the font we want to use
+        self.font_id = QFontDatabase.addApplicationFont(os.path.join(os.getcwd(), "assets", "Roboto-Bold.ttf"))
+        self.font_family = QFontDatabase.applicationFontFamilies(self.font_id)[0]
 
         # Set window properties
         self.setWindowTitle('Album Art GUI')
@@ -20,28 +30,44 @@ class AlbumArtGUI(QWidget):
         # Set background color to black
         self.setStyleSheet("background-color: black;")
 
-        # Create a layout
-        self.layout = QVBoxLayout()
+        # Create a main layout
+        self.main_layout = QVBoxLayout()
+        self.setLayout(self.main_layout)
+
+        # Create album art container
+        self.album_container = QVBoxLayout()
+        self.album_container.setAlignment(Qt.AlignCenter)
 
         # Add album art (centered)
         self.album_art = QLabel(self)
         self.album_art.setAlignment(Qt.AlignCenter)
-        self.layout.addWidget(self.album_art)
+        self.album_container.addWidget(self.album_art)
 
-        # Add song name, artist, and album text (centered)
-        self.song_info = QLabel(self)
-        self.song_info.setStyleSheet("color: white;")
-        self.song_info.setFont(QFont('Arial', 14))
-        self.song_info.setAlignment(Qt.AlignCenter)
-        self.layout.addWidget(self.song_info)
+        # Add song name (title) label
+        self.title = QLabel(self)
+        self.title.setStyleSheet("color: white;")
+        self.title.setAlignment(Qt.AlignCenter)
+        self.album_container.addWidget(self.title)
+
+        # Add artist name label
+        self.subtitle = QLabel(self)
+        self.subtitle.setStyleSheet("color: white;")
+        self.subtitle.setAlignment(Qt.AlignCenter)
+        self.album_container.addWidget(self.subtitle)
+
+        # Add album name label
+        self.second_subtitle = QLabel(self)
+        self.second_subtitle.setStyleSheet("color: white;")
+        self.second_subtitle.setAlignment(Qt.AlignCenter)
+        self.album_container.addWidget(self.second_subtitle)
 
         # Set the layout for the widget
-        self.setLayout(self.layout)
+        self.main_layout.addLayout(self.album_container)
 
         # Create a timer to update the album art and song info every second, by querying the API
         self.timer = QTimer(self)
         self.timer.timeout.connect(self.update_ui)
-        self.timer.start(1000) #update UI every 5 seconds
+        self.timer.start(1000) #update UI every second
 
         # Initial load of data
         self.update_ui()
@@ -100,12 +126,44 @@ class AlbumArtGUI(QWidget):
     def _set_album_art_and_text(self, album_art_path, title='', subtitle='', second_subtitle=''):
         # Update the album art
         pixmap = QPixmap(album_art_path)
-        pixmap = pixmap.scaled(300, 300, Qt.KeepAspectRatio)
+        pixmap = pixmap.scaled(int(self.width() * 0.8), int(self.height() * 0.9), Qt.KeepAspectRatio)
         self.album_art.setPixmap(pixmap)
 
         # Update the song info text
-        song_text = f"{title}\n{subtitle}\n{second_subtitle}"
-        self.song_info.setText(song_text)
+        self.title.setText(title)
+        self.subtitle.setText(subtitle)
+        self.second_subtitle.setText(second_subtitle)
+        self._adjust_text_sizes()
+
+        self._show_screen_dimensions()
+
+    def _show_screen_dimensions(self):
+        screen = QApplication.primaryScreen()
+        dpi = screen.physicalDotsPerInch()
+
+        print(f"Screen Width: {self.width()/dpi} Inches | Screen Height: {self.height()/dpi} Inches")
+        print(f"Album Art Width: {self.album_art.width()/dpi} Inches | Album Art Height: {self.album_art.height()/dpi} Inches")
+        print(f"Title Size: {self.title.size()}")
+        print(f"Subtitle Size: {self.subtitle.size()}")
+        print(f"Title Size: {self.second_subtitle.size()}")
+        
+
+    def _adjust_text_sizes(self):
+        # Get the window dimensions
+        album_art_width = self.album_art.width()
+
+        # Adjust the font sizes based on window height
+        # Song title gets the largest font size
+        title_font_size = int(album_art_width * 0.05)  # 5% of window height
+        self.title.setFont(QFont(self.font_family, title_font_size))
+
+        # Song artist gets a medium font size
+        artist_font_size = int(album_art_width * 0.035)  # 3.5% of window height
+        self.subtitle.setFont(QFont(self.font_family, artist_font_size))
+
+        # Album name gets the smallest font size
+        album_font_size = int(album_art_width * 0.03)  # 3% of window height
+        self.second_subtitle.setFont(QFont(self.font_family, album_font_size))
 
 # Run the application
 if __name__ == '__main__':
