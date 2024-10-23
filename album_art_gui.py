@@ -126,7 +126,7 @@ class AlbumArtGUI(QWidget):
     def _set_album_art_and_text(self, album_art_path, title='', subtitle='', second_subtitle=''):
         # Update the album art
         pixmap = QPixmap(album_art_path)
-        pixmap = pixmap.scaled(int(self.width() * 0.8), int(self.height() * 0.9), Qt.KeepAspectRatio)
+        pixmap = pixmap.scaled(int(self.width()), int(self.height()), Qt.KeepAspectRatio)
         self.album_art.setPixmap(pixmap)
 
         # Update the song info text

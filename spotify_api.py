@@ -1,4 +1,4 @@
-from flask import Flask, request, redirect, Response, jsonify
+from flask import Flask, request, redirect, Response, jsonify, render_template
 from dotenv import load_dotenv
 import requests
 import random
@@ -11,10 +11,11 @@ from spotify_api_helpers import SpotifyAPIHelpers
 # Flask App
 app = Flask(__name__)
 
+# Cache to store some dynamic variables
+app_cache = {}
+
 # Environment Variables
 load_dotenv()
-client_id = os.getenv('CLIENT_ID')
-client_secret = os.getenv('CLIENT_SECRET')
 redirect_uri = os.getenv('REDIRECT_URI')
 app_port = os.getenv('APP_PORT')
 
@@ -28,21 +29,37 @@ def generate_random_string(length: int) -> string:
 def status():
     return Response("app is running", status=200)
 
-@app.route('/login', methods=['GET'])
+# TODO: if GET request, render login page, if POST request, call spotify auth url
+@app.route('/login', methods=['GET', 'POST'])
 def login():
-    state = generate_random_string(16)
-    scope = 'user-read-private user-read-currently-playing'
-    spotify_auth_url = (
-        'https://accounts.spotify.com/authorize?'
-        'response_type=code'
-        f'&client_id={client_id}'
-        f'&scope={scope}'
-        f'&redirect_uri={redirect_uri}'
-        f'&state={state}'     
-    )
+    if request.method == "POST":
+        # validate inputs
+        if not request.form.get("clientid"):
+            return Response(response="Please enter a valid client id", status=400)
+        if not request.form.get("clientsecret"):
+            return Response(response="Please enter a valid client secret", status=400)
+        
+        app_cache['CLIENT_ID'] = request.form.get("clientid")
+        app_cache['CLIENT_SECRET'] = request.form.get("clientsecret")
 
-    return redirect(spotify_auth_url)
+        # redirect user request to spotify using client id and client secret
+        state = generate_random_string(16)
+        scope = 'user-read-private user-read-currently-playing'
+        spotify_auth_url = (
+            'https://accounts.spotify.com/authorize?'
+            'response_type=code'
+            f'&client_id={app_cache['CLIENT_ID']}'
+            f'&scope={scope}'
+            f'&redirect_uri={redirect_uri}'
+            f'&state={state}'     
+        )
 
+        return redirect(spotify_auth_url)
+
+    else:
+        return render_template("login.html")
+
+# TODO: this call back saves the token, then renders the album art gui (or redirect to another endpoint that renders it?)
 @app.route('/callback')
 def callback():
     auth_code = request.args.get('code')
@@ -60,7 +77,7 @@ def callback():
             return Response(code_not_provided_error, status=400)
         
     token_request_url = 'https://accounts.spotify.com/api/token'
-    auth_string = f'{client_id}:{client_secret}'
+    auth_string = f'{app_cache['CLIENT_ID']}:{app_cache['CLIENT_SECRET']}'
 
     headers = {
         'content-type': 'application/x-www-form-urlencoded',
