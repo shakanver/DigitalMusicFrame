@@ -79,7 +79,6 @@ def login():
     else:
         return render_template("login.html")
 
-# TODO: this call back saves the token, then renders the album art gui (or redirect to another endpoint that renders it?)
 @app.route('/callback')
 def callback():
     auth_code = request.args.get('code')
@@ -110,7 +109,6 @@ def callback():
         'redirect_uri': redirect_uri
     }
     
-    #TODO: write token and refresh token to cache
     token_response = requests.post(url=token_request_url, headers=headers, data=data)
 
     if token_response.status_code != 200:
@@ -121,9 +119,7 @@ def callback():
     app_cache['REFRESH_TOKEN'] = token_response_json['refresh_token']
 
     return render_template('album_art.html')
-    
 
-#TODO: get current track info using cached token and refresh token
 @app.route('/currenttrack')
 def currenttrack():
     my_info_url = "https://api.spotify.com/v1/me/player/currently-playing"
