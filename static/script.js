@@ -12,7 +12,7 @@ document.addEventListener("DOMContentLoaded", function()
             })
             .then(data =>
             {
-                console.log(data)
+                updateUI(data)
             })
             .catch(error => console.error('Error fetching song data:', error)); //TODO: figure out why this isn't handling 500 errors
     }
@@ -20,28 +20,28 @@ document.addEventListener("DOMContentLoaded", function()
     function updateUI(data)
     {
         var currentTrackContent = data.item;
+        var currentlyPlayingType = data.currently_playing_type;
         if (currentTrackContent === null)
         {
             console.log('No track is currently playing');
             setAlbumArtAndText("assets/spotify.png");
+        } else if (currentlyPlayingType === 'track')
+        {
+            setAlbumArtAndText(currentTrackContent.album.images[0].url, currentTrackContent.name, currentTrackContent.artists[0].name, currentTrackContent.album.name);
+        } else if (currentlyPlayingType === 'episode')
+        {
+            setAlbumArtAndText(currentTrackContent.album.images[0].url, currentTrackContent.name);
+        } else
+        {
+            setAlbumArtAndText("assets/spotify.png");
         }
-        // if (data.cu)
-        // {
-        //     [albumArtPath, title, subtitle, secondSubtitle] = getTrackInfo(currentTrackContent);
-            
-        // }
     }
 
-    function setAlbumArtAndText(albumArtPath, title = "", subtitle = "", secondSubtitle = "")
+    function setAlbumArtAndText(albumArtPath="", title = "", subtitle = "", secondSubtitle = "")
     {
         document.getElementById('albumArt').src = albumArtPath;
         document.getElementById('title').textContent = title;
-        document.getElementById('artist').textContent = subtitle;
-        document.getElementById('album').textContent = secondSubtitle;
-    }
-
-    function getTrackInfo(currentTrackContent)
-    {
-
+        document.getElementById('subtitle').textContent = subtitle;
+        document.getElementById('secondsubtitle').textContent = secondSubtitle;
     }
 });
