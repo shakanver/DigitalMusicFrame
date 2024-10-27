@@ -132,7 +132,7 @@ def currenttrack():
     response_content = response.content.decode()
 
     if not response_content:
-        raise ValueError("No track is currently playing on spotify")
+       return json.dumps("No track is playing")
 
     if response.status_code != 200:
         error_contents = json.loads(response_content)

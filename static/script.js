@@ -8,13 +8,17 @@ document.addEventListener("DOMContentLoaded", function()
         fetch('http://localhost:3001/currenttrack')
             .then(response =>
             {
+                if (!response.ok)
+                {
+                    throw new Error(response.statusText)
+                }
                 return response.json()
             })
             .then(data =>
             {
                 updateUI(data)
             })
-            .catch(error => console.error('Error fetching song data:', error)); //TODO: figure out why this isn't handling 500 errors
+            .catch(error => console.error('Error fetching song data:', error));
     }
 
     function updateUI(data)
@@ -23,8 +27,9 @@ document.addEventListener("DOMContentLoaded", function()
         var currentlyPlayingType = data.currently_playing_type;
         if (currentTrackContent === null)
         {
+            console.log("here");
             console.log('No track is currently playing');
-            setAlbumArtAndText("assets/spotify.png");
+            setAlbumArtAndText("static/assets/spotify.png");
         } else if (currentlyPlayingType === 'track')
         {
             setAlbumArtAndText(currentTrackContent.album.images[0].url, currentTrackContent.name, currentTrackContent.artists[0].name, currentTrackContent.album.name);
@@ -33,7 +38,7 @@ document.addEventListener("DOMContentLoaded", function()
             setAlbumArtAndText(currentTrackContent.album.images[0].url, currentTrackContent.name);
         } else
         {
-            setAlbumArtAndText("assets/spotify.png");
+            setAlbumArtAndText("static/assets/spotify.png");
         }
     }
 
