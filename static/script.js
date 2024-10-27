@@ -6,15 +6,15 @@ document.addEventListener("DOMContentLoaded", function()
     function fetchSongData()
     {
         fetch('http://localhost:3001/currenttrack')
-            .then(response => response.json())
+            .then(response =>
+            {
+                return response.json()
+            })
             .then(data =>
             {
-                console.log("this is the data: \n" + data)
-                var dataAsJson = JSON.parse(data)
-                console.log(dataAsJson);
-                updateUI(dataAsJson);
+                console.log(data)
             })
-            .catch(error => console.error('Error fetching song data:', error));
+            .catch(error => console.error('Error fetching song data:', error)); //TODO: figure out why this isn't handling 500 errors
     }
 
     function updateUI(data)
