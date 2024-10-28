@@ -1,21 +1,36 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Album Art Display</title>
-        <link rel="preconnect" href="https://fonts.googleapis.com">
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-        <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
-        <link rel="stylesheet" href="static/styles.css">
-    </head>
-    <body>
-        <div class="container" id="album-container">
-            <img id="albumArt" src="static/assets/spotify.png" alt="Album Art">
-            <div id="title" class="text title"></div>
-            <div id="subtitle" class="text subtitle"></div>
-            <div id="secondsubtitle" class="text secondsubtitle"></div>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Album Art Display</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Google Fonts for Roboto -->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="static/styles.css">
+</head>
+<body class="bg-dark text-white" style="font-family: 'Roboto', sans-serif;">
+    <div class="container d-flex justify-content-center align-items-center vh-100">
+        <div class="card bg-dark border-0" style="width: 100%; max-width: 500px;">
+            <!-- Album Art -->
+            <img id="albumArt" src="static/assets/spotify.png" class="card-img-top" alt="Album Art" style="object-fit: contain;">
+
+            <div class="card-body text-center">
+                <!-- Song Title -->
+                <h5 id="title" class="card-title font-weight-bold mb-2"></h5>
+                <!-- Artist Name -->
+                <p id="subtitle" class="card-text mb-1"></p>
+                <!-- Album Name -->
+                <p id="secondsubtitle" class="card-text text-muted"></p>
+            </div>
         </div>
-        <script src="static/script.js"></script>
-    </body>
+    </div>
+
+    <!-- jQuery and Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+    <!-- External JavaScript File -->
+    <script src="static/script.js"></script>
+</body>
 </html>
