@@ -12,18 +12,19 @@
 </head>
 <body style="font-family: 'Roboto', sans-serif;">
     <div class="container d-flex justify-content-center align-items-center vh-100">
-        <div style="width: 100%;">
-            <!-- Album Art -->
-            <div class="d-flex justify-content-center">
-                <img id="albumArt" src="static/assets/spotify.png" class="card-img-top" alt="Album Art" style="object-fit: contain;">
+        <div class="flex-container">
+            <!-- Second Subtitle aligned left -->
+            <div id="secondsubtitle" class="text-muted">Second Subtitle Text</div>
+
+            <!-- Centered Album Art -->
+            <div class="album-art-container">
+                <img id="albumArt" src="static/assets/spotify.png" alt="Album Art">
             </div>
-            <div class="card-body text-center">
-                <!-- Song Title -->
-                <h2 id="title" class="card-title font-weight-bold mb-2"></h2>
-                <!-- Artist Name -->
-                <h3 id="subtitle" class="card-text mb-1"></h3>
-                <!-- Album Name -->
-                <h4 id="secondsubtitle" class="card-text text-muted"></h4>
+
+            <!-- Title and Subtitle aligned right -->
+            <div class="text-right">
+                <h3 id="title" class="text-white"></h3>
+                <h4 id="subtitle" class="text-white"></h4>
             </div>
         </div>
     </div>

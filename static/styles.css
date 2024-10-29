@@ -1,10 +1,44 @@
-#albumArt {
-    width: 70vw; /* 70% of viewport width */
-    height: 70vh; /* 70% of viewport height */
-    object-fit: cover; /* Cover the image to maintain aspect ratio */
-}
-
 body {
     background-color: black; /* Set body background to black */
     color: white; /* Set text color to white for visibility */
+}
+
+/* Flex container to stack elements in a column */
+.flex-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 70%; /* Width matches the image width */
+    gap: 15px;
+    position: relative;
+}
+
+/* Second subtitle aligned to top-left within the flex container */
+#secondsubtitle {
+    align-self: flex-start;
+    font-size: clamp(0.8rem, 2vw, 1.2rem);
+    max-width: 100%;
+    overflow-wrap: break-word;
+    margin-bottom: -5px; /* Adjust spacing if needed */
+}
+
+/* Album art centered within the flex container */
+.album-art-container {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+}
+
+#albumArt {
+    width: 100%;
+    /* max-width: 70%; */
+    height: auto;
+    object-fit: contain;
+}
+
+/* Title and subtitle aligned to the right */
+.text-right {
+    align-self: flex-end;
+    max-width: 100%;
+    text-align: right;
 }
