@@ -10,19 +10,20 @@
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="static/styles.css">
 </head>
-<body class="bg-dark text-white" style="font-family: 'Roboto', sans-serif;">
+<body style="font-family: 'Roboto', sans-serif;">
     <div class="container d-flex justify-content-center align-items-center vh-100">
-        <div class="card bg-dark border-0" style="width: 100%; max-width: 500px;">
+        <div style="width: 100%;">
             <!-- Album Art -->
-            <img id="albumArt" src="static/assets/spotify.png" class="card-img-top" alt="Album Art" style="object-fit: contain;">
-
+            <div class="d-flex justify-content-center">
+                <img id="albumArt" src="static/assets/spotify.png" class="card-img-top" alt="Album Art" style="object-fit: contain;">
+            </div>
             <div class="card-body text-center">
                 <!-- Song Title -->
-                <h5 id="title" class="card-title font-weight-bold mb-2"></h5>
+                <h2 id="title" class="card-title font-weight-bold mb-2"></h2>
                 <!-- Artist Name -->
-                <p id="subtitle" class="card-text mb-1"></p>
+                <h3 id="subtitle" class="card-text mb-1"></h3>
                 <!-- Album Name -->
-                <p id="secondsubtitle" class="card-text text-muted"></p>
+                <h4 id="secondsubtitle" class="card-text text-muted"></h4>
             </div>
         </div>
     </div>

@@ -1,61 +1,10 @@
+#albumArt {
+    width: 70vw; /* 70% of viewport width */
+    height: 70vh; /* 70% of viewport height */
+    object-fit: cover; /* Cover the image to maintain aspect ratio */
+}
+
 body {
-    background-color: black;
-    color: white;
-    font-family: Arial, sans-serif;
-}
-
-.form-container {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-}
-
-form {
-    display: flex;
-    flex-direction: column;
-    width: 300px;
-    background-color: #333;
-    padding: 20px;
-    border-radius: 10px;
-}
-
-form input {
-    margin-bottom: 10px;
-    padding: 8px;
-    border-radius: 5px;
-    border: none;
-}
-
-form button {
-    padding: 10px;
-    background-color: #1db954;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-}
-
-form button:hover {
-    background-color: #1aa34a;
-}
-
-.container {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-}
-
-.album-art {
-    width: 100%;
-    max-width: 300px;
-    height: auto;
-}
-
-.text {
-    margin-top: 10px;
-    text-align: center;
+    background-color: black; /* Set body background to black */
+    color: white; /* Set text color to white for visibility */
 }
