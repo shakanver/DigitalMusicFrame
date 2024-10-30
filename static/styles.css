@@ -1,0 +1,58 @@
+body {
+    background-color: black; /* Set body background to black */
+    color: white; /* Set text color to white for visibility */
+}
+
+/* Flex container to stack elements in a column */
+.flex-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 70%; /* Width matches the image width */
+    gap: 5px;
+    position: relative;
+}
+
+/* Second subtitle aligned to top-left within the flex container */
+.text-left {
+    align-self: flex-start;
+    max-width: 50%;
+}
+
+/* Title and subtitle aligned to the right */
+.text-right {
+    align-self: flex-end;
+    max-width: 50%;
+    text-align: right;
+}
+
+/* Album art centered within the flex container */
+.album-art-container {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+}
+
+#albumArt {
+    width: 100%;
+    height: auto;
+    object-fit: contain;
+}
+
+.roboto-black {
+    font-family: "Roboto", serif;
+    font-weight: 900;
+    font-style: normal;
+  }
+
+  .roboto-medium-italic {
+    font-family: "Roboto", serif;
+    font-weight: 500;
+    font-style: italic;
+  }
+
+  .roboto-light {
+    font-family: "Roboto", serif;
+    font-weight: 300;
+    font-style: normal;
+  }
