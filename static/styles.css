@@ -9,17 +9,21 @@ body {
     flex-direction: column;
     align-items: center;
     width: 70%; /* Width matches the image width */
-    gap: 15px;
+    gap: 5px;
     position: relative;
 }
 
 /* Second subtitle aligned to top-left within the flex container */
-#secondsubtitle {
+.text-left {
     align-self: flex-start;
-    font-size: clamp(0.8rem, 2vw, 1.2rem);
-    max-width: 100%;
-    overflow-wrap: break-word;
-    margin-bottom: -5px; /* Adjust spacing if needed */
+    max-width: 50%;
+}
+
+/* Title and subtitle aligned to the right */
+.text-right {
+    align-self: flex-end;
+    max-width: 50%;
+    text-align: right;
 }
 
 /* Album art centered within the flex container */
@@ -31,14 +35,24 @@ body {
 
 #albumArt {
     width: 100%;
-    /* max-width: 70%; */
     height: auto;
     object-fit: contain;
 }
 
-/* Title and subtitle aligned to the right */
-.text-right {
-    align-self: flex-end;
-    max-width: 100%;
-    text-align: right;
-}
+.roboto-black {
+    font-family: "Roboto", serif;
+    font-weight: 900;
+    font-style: normal;
+  }
+
+  .roboto-medium-italic {
+    font-family: "Roboto", serif;
+    font-weight: 500;
+    font-style: italic;
+  }
+
+  .roboto-light {
+    font-family: "Roboto", serif;
+    font-weight: 300;
+    font-style: normal;
+  }

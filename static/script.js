@@ -45,8 +45,8 @@ document.addEventListener("DOMContentLoaded", function()
     function setAlbumArtAndText(albumArtPath="", title = "", subtitle = "", secondSubtitle = "")
     {
         document.getElementById('albumArt').src = albumArtPath;
-        document.getElementById('title').textContent = title;
-        document.getElementById('subtitle').textContent = subtitle;
-        document.getElementById('secondsubtitle').textContent = secondSubtitle;
+        document.getElementById('title').textContent = title.toUpperCase();
+        document.getElementById('subtitle').textContent = subtitle.toUpperCase();
+        document.getElementById('secondsubtitle').textContent = secondSubtitle.toUpperCase();
     }
 });
