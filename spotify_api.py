@@ -6,7 +6,6 @@ import string
 import base64
 import json
 import os
-from spotify_api_helpers import SpotifyAPIHelpers
 
 # Flask App
 app = Flask(__name__)
@@ -44,6 +43,12 @@ def refresh_token(self) -> None:
     app_cache['TOKEN'] = response_json.get('access_token')
     app_cache['REFRESH_TOKEN'] = response_json.get('refresh_token')
     print("TOKEN REFRESHED")
+
+def generate_b64_encoded_string(plain_string: string) -> string:
+    string_bytes = plain_string.encode()
+    string_bytes_b64 = base64.b64encode(string_bytes)
+    string_b64_encoded = string_bytes_b64.decode()
+    return string_b64_encoded
 
 # Endpoints
 @app.route('/', methods=['GET'])
@@ -100,7 +105,7 @@ def callback():
 
     headers = {
         'content-type': 'application/x-www-form-urlencoded',
-        'Authorization': f'Basic {SpotifyAPIHelpers.generate_b64_encoded_string(auth_string)}'
+        'Authorization': f'Basic {generate_b64_encoded_string(auth_string)}'
     }
 
     data = {
