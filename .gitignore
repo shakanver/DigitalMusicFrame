@@ -3,6 +3,6 @@
 # Python Cache
 **/__pycache__/**
 # Dynamically generated album art assets
-assets/album_art.png
+*/assets/palette.png
 # font Database
 **/.DS_Store
