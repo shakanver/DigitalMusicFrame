@@ -82,7 +82,23 @@ document.addEventListener("DOMContentLoaded", function()
 
         if (addColourPalette)
         {
-            document.getElementById('colourPalette').src = 'static/assets/palette.png';
+            url = 'static/assets/palette.png'
+            fetch(url, {cache: 'reload', mode: 'no-cors'})
+                .then(response =>
+                {
+                    if (!response.ok)
+                    {
+                        throw new Error(response.statusText);
+                    }
+                })
+                .then(data => 
+                {
+                    console.log(data);
+                    document.getElementById('colourPalette').src = url;
+                })
+                .catch(error => {
+                    console.error("Error:", error);
+                });
         }
     }
 });
