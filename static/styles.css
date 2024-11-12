@@ -1,6 +1,6 @@
 body {
     background-color: black; /* Set body background to black */
-    color: white; /* Set text color to white for visibility */
+    color: #f5f5dc; /* Set text color to white for visibility */
 }
 
 /* Flex container to stack elements in a column */
@@ -34,16 +34,16 @@ body {
     width: 100%;
 }
 
-.colour-palette-container {
-    display: flex;
-    justify-content: center;
-    width: 100%;
-}
-
 #albumArt {
     width: 100%;
     height: 100%;
     object-fit: contain;
+}
+
+.colour-palette-container {
+    display: flex;
+    justify-content: center;
+    width: 100%;
 }
 
 #colourPalette {
