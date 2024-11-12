@@ -25,7 +25,8 @@ document.addEventListener("DOMContentLoaded", function()
     {
         var currentTrackContent = data.item;
         var currentlyPlayingType = data.currently_playing_type;
-        if (currentTrackContent === null)
+        console.log(currentTrackContent)
+        if (currentTrackContent === null || currentTrackContent === undefined)
         {
             console.log('No track is currently playing');
             setAlbumArtAndText("static/assets/spotify.png");
@@ -92,6 +93,9 @@ document.addEventListener("DOMContentLoaded", function()
                 .catch(error => {
                     console.error("Error:", error);
                 });
+        } else
+        {
+            document.getElementById('colourPalette').src = "";
         }
 
         document.getElementById('albumArt').src = albumArtPath;
