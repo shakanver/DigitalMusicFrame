@@ -74,12 +74,6 @@ document.addEventListener("DOMContentLoaded", function()
 
     function setAlbumArtAndText(albumArtPath="", title = "", subtitle = "", secondSubtitle = "", addColourPalette = false)
     {
-        console.log(albumArtPath);
-        document.getElementById('albumArt').src = albumArtPath;
-        document.getElementById('title').textContent = title.toUpperCase();
-        document.getElementById('subtitle').textContent = subtitle.toUpperCase();
-        document.getElementById('secondsubtitle').textContent = secondSubtitle.toUpperCase();
-
         if (addColourPalette)
         {
             url = 'static/assets/palette.png'
@@ -100,5 +94,11 @@ document.addEventListener("DOMContentLoaded", function()
                     console.error("Error:", error);
                 });
         }
+
+        document.getElementById('albumArt').src = albumArtPath;
+        document.getElementById('title').textContent = title.toUpperCase();
+        document.getElementById('subtitle').textContent = subtitle.toUpperCase();
+        document.getElementById('secondsubtitle').textContent = secondSubtitle.toUpperCase();
+
     }
 });

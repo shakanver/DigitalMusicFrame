@@ -66,7 +66,7 @@ def gen_colour_palette_from_album_art(album_art_url):
     # Determine the width and height of the final palette image
     swatch_size = 100
     width = swatch_size * len(final_list)
-    height = swatch_size
+    height = 20
     
     # Create a new image with the determined size
     palette_image = Image.new("RGB", (width, height))
