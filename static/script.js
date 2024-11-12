@@ -27,7 +27,6 @@ document.addEventListener("DOMContentLoaded", function()
         var currentlyPlayingType = data.currently_playing_type;
         if (currentTrackContent === null)
         {
-            console.log("here");
             console.log('No track is currently playing');
             setAlbumArtAndText("static/assets/spotify.png");
         } else if (currentlyPlayingType === 'track')
