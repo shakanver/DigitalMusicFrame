@@ -8,7 +8,7 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
-    width: 95%; /* Width matches the image width */
+    width: 80%; /* Width matches the image width */
     height: 100%;
     gap: 20px;
     position: relative;
