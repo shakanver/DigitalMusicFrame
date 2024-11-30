@@ -2,10 +2,13 @@
 
 ## Setup
 
+This section outlines the pre-requisite setup steps that need to be taken in order to launch the app.
+
 ### Register an App on Your Spotify Dashboard
 The following documentation from Spotify outlines how you can register your own app via the dashboard.
 https://developer.spotify.com/documentation/web-api/concepts/apps
 
+NOTE: when registering you app specify the port number as 3001
 
 ### Python Virtual Environment
 
@@ -16,61 +19,38 @@ https://conda.io/projects/conda/en/latest/user-guide/install/index.html
 
 2. Create a new virtual environment called DigitalMusicFrame using the following command:
 
-    `conda create --name DigitalMusicFrame  python=3.12.2`
+    `conda create --name digiframe  python=3.9.2`
+
+    NOTE: I'm using an older version of python because this project is running on a raspberry pi 3, which cant run newer python versions
 
 3. Activate the virtual environment using the following command:
 
-    `conda activate DigitalMusicFrame`
+    `conda activate digiframe`
 
 4. Install all the required packages using the following command:
 
     `pip install -r requirements.txt`
 
-### Adding Environment Variables
-
-You'll need to define some environment variables for the application to use in order to authenticate yourself and provide authorization to access your information with spotify. Setup the variables using the following steps:
-
-1. Navigate to the backend folder, and create a file called .env
-2. Populate the file with the following contents:
-```
-CLIENT_ID='ADD YOUR CLIENT ID HERE'
-CLIENT_SECRET='ADD YOUR CLIENT SECRET HERE'
-REDIRECT_URI='YOUR REDIRECT URL HERE'
-APP_PORT='PORT YOUR REGISTERED APP LISTENS TO HERE'
-```
-Replace the values of each variable based on whats provided on your Spotify Dashboard
-
 ## Launch instructions
 
-Follow these instructions to start up the backend
+### Launching the api
 
-1. Activate the virtual environment by running the following command:
+1. Open a terminal, navigate to the DigitakMusicFrame project
 
-    `conda activate DigitalMusicFrame`
+2. Activate the virtual environment you created in the setup stage by running the following command:
 
-2. Start the login app using the following command:
+    `conda activate digiframe`
+
+3. Start the login app using the following command:
 
     `python3 spotify_api.py`
 
 3. Open a browser, and navigate to the login url:
 
-    `http://localhost:{YOUR_PORT_NUMBER_HERE}/login`
+    `http://localhost:3001/login`
 
-    This should return you a token and refresh token like this:
+and enter your login details and which will include your client ID and client secret. You should be able to obtain this by going to your spotify dashboard, clicking on the app you created during setup and navigating to the settings of that app.
 
-    ```
-    {
-        "access_token": "YOUR_NEW_TOKEN",
-        "expires_in": 3600,
-        "refresh_token": "YOUR_NEW_REFRESH_TOKEN",
-        "scope": "user-read-currently-playing user-read-private",
-        "token_type": "Bearer"
-    }
-    ```
-    NOTE:
-    when its your first time authenticating, you'll be redirected to a browser page from spotify, asking if you to authorize your spotify app to access your data. And then it will return the token data as expected
-
-4. Once you've logged in an gotten the token, you can close the login app spotify_api.py, and run the gui app 'album_art_gui.py'. you will be prompted to enter the token and refresh token you were provided with from step 3. Then, you should see the app start.
 
 ## Credit for Assets Used
 All assets used in this project were accessed from FlatIcon:

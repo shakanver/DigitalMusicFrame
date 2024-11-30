@@ -1,5 +1,7 @@
 from flask import Flask, request, redirect, Response, jsonify, render_template
 from dotenv import load_dotenv
+from PIL import Image
+from io import BytesIO
 import requests
 import random
 import string
@@ -40,8 +42,8 @@ def refresh_token(self) -> None:
     response = requests.post(url=url, headers=headers, data=data)
     response.raise_for_status()
     response_json = response.json()
-    app_cache['TOKEN'] = response_json.get('access_token')
-    app_cache['REFRESH_TOKEN'] = response_json.get('refresh_token')
+    app_cache["TOKEN"] = response_json.get('access_token')
+    app_cache["REFRESH_TOKEN"] = response_json.get('refresh_token')
     print("TOKEN REFRESHED")
 
 def generate_b64_encoded_string(plain_string: string) -> string:
@@ -49,6 +51,34 @@ def generate_b64_encoded_string(plain_string: string) -> string:
     string_bytes_b64 = base64.b64encode(string_bytes)
     string_b64_encoded = string_bytes_b64.decode()
     return string_b64_encoded
+
+def gen_colour_palette_from_album_art(album_art_url):
+    image_response = requests.get(album_art_url)
+    imgage = Image.open(BytesIO(image_response.content))
+    quantized = imgage.quantize(colors=5, kmeans=5)
+    convert_rgb = quantized.convert('RGB')
+    colors = convert_rgb.getcolors()
+    color_str = sorted(colors, reverse=True)
+    final_list = []
+    for i in color_str:
+        final_list.append(i[1])
+    
+    # Determine the width and height of the final palette image
+    swatch_size = 100
+    width = swatch_size * len(final_list)
+    height = 20
+    
+    # Create a new image with the determined size
+    palette_image = Image.new("RGB", (width, height))
+    
+    # Draw each color in the palette as a vertical strip
+    for i, color in enumerate(final_list):
+        for x in range(i * swatch_size, (i + 1) * swatch_size):
+            for y in range(height):
+                palette_image.putpixel((x, y), color)
+    
+    # Save the final palette image as a JPEG file
+    palette_image.save('static/assets/palette.png', "PNG")
 
 # Endpoints
 @app.route('/', methods=['GET'])
@@ -64,8 +94,8 @@ def login():
         if not request.form.get("clientsecret"):
             return Response(response="Please enter a valid client secret", status=400)
         
-        app_cache['CLIENT_ID'] = request.form.get("clientid")
-        app_cache['CLIENT_SECRET'] = request.form.get("clientsecret")
+        app_cache["CLIENT_ID"] = request.form.get("clientid")
+        app_cache["CLIENT_SECRET"] = request.form.get("clientsecret")
 
         # redirect user request to spotify using client id and client secret
         state = generate_random_string(16)
@@ -73,7 +103,7 @@ def login():
         spotify_auth_url = (
             'https://accounts.spotify.com/authorize?'
             'response_type=code'
-            f'&client_id={app_cache['CLIENT_ID']}'
+            f'&client_id={app_cache["CLIENT_ID"]}'
             f'&scope={scope}'
             f'&redirect_uri={redirect_uri}'
             f'&state={state}'     
@@ -101,7 +131,7 @@ def callback():
             return Response(code_not_provided_error, status=400)
         
     token_request_url = 'https://accounts.spotify.com/api/token'
-    auth_string = f'{app_cache['CLIENT_ID']}:{app_cache['CLIENT_SECRET']}'
+    auth_string = f'{app_cache["CLIENT_ID"]}:{app_cache["CLIENT_SECRET"]}'
 
     headers = {
         'content-type': 'application/x-www-form-urlencoded',
@@ -120,8 +150,8 @@ def callback():
         return Response(f"HTTP Error: \n status code: {token_response.status_code} \n message: {token_response.content}", status=500)
 
     token_response_json = token_response.json()
-    app_cache['TOKEN'] = token_response_json['access_token']
-    app_cache['REFRESH_TOKEN'] = token_response_json['refresh_token']
+    app_cache["TOKEN"] = token_response_json["access_token"]
+    app_cache["REFRESH_TOKEN"] = token_response_json["refresh_token"]
 
     return render_template('album_art.html')
 
@@ -129,10 +159,9 @@ def callback():
 def currenttrack():
     my_info_url = "https://api.spotify.com/v1/me/player/currently-playing"
     headers = {
-        "Authorization": f'Bearer {app_cache['TOKEN']}'
+        "Authorization": f'Bearer {app_cache["TOKEN"]}'
     }
 
-    #TODO: add a try-catch here, to handle ConnectionError: Connnection Reset by Peer
     response = requests.get(my_info_url, headers=headers)
     response_content = response.content.decode()
 
@@ -141,17 +170,27 @@ def currenttrack():
 
     if response.status_code != 200:
         error_contents = json.loads(response_content)
-        error_message = error_contents['error']['message']
+        error_message = error_contents["error"]["message"]
         if response.status_code == 401 and "The access token expired" in error_message:
             refresh_token()
             headers = {
-                "Authorization": f'Bearer {app_cache['TOKEN']}'
+                "Authorization": f'Bearer {app_cache["TOKEN"]}'
             }
             response = requests.get(my_info_url, headers=headers)
             response.raise_for_status()
             response_content = response.content.decode()
 
     return json.loads(response_content)
+
+@app.route('/colourpalette', methods=['POST', 'PUT'])
+def colourpalette():
+    album_art_url = request.args.get('albumArtUrl')
+    if not album_art_url:
+        return jsonify(message="please provide a valid album art url", status=400)
+    
+    gen_colour_palette_from_album_art(album_art_url)
+
+    return jsonify(message="palette generated successfully", status=200)
 
 if __name__ == '__main__':
     app.run(debug=True, port=app_port)

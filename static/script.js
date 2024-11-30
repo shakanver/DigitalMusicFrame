@@ -25,28 +25,83 @@ document.addEventListener("DOMContentLoaded", function()
     {
         var currentTrackContent = data.item;
         var currentlyPlayingType = data.currently_playing_type;
-        if (currentTrackContent === null)
+        console.log(currentTrackContent)
+        if (currentTrackContent === null || currentTrackContent === undefined)
         {
-            console.log("here");
             console.log('No track is currently playing');
             setAlbumArtAndText("static/assets/spotify.png");
         } else if (currentlyPlayingType === 'track')
         {
-            setAlbumArtAndText(currentTrackContent.album.images[0].url, currentTrackContent.name, currentTrackContent.artists[0].name, currentTrackContent.album.name);
+            genColourPaletteFromAlbumArtUrl(currentTrackContent.album.images[0].url)
+            setAlbumArtAndText(currentTrackContent.album.images[0].url, currentTrackContent.name, currentTrackContent.artists[0].name, currentTrackContent.album.name, true);
         } else if (currentlyPlayingType === 'episode')
         {
-            setAlbumArtAndText(currentTrackContent.album.images[0].url, currentTrackContent.name);
+            genColourPaletteFromAlbumArtUrl(currentTrackContent.album.images[0].url)
+            setAlbumArtAndText(currentTrackContent.album.images[0].url, currentTrackContent.name, true);
         } else
         {
             setAlbumArtAndText("static/assets/spotify.png");
         }
     }
 
-    function setAlbumArtAndText(albumArtPath="", title = "", subtitle = "", secondSubtitle = "")
+    function genColourPaletteFromAlbumArtUrl(albumArtUrl)
     {
+        const url = `http://localhost:3001/colourpalette?albumArtUrl=${albumArtUrl}`
+
+        const options =
+        {
+            method: "POST",
+            headers:
+            {
+                "Content-Type": "application/json"
+            }
+        }
+
+        fetch(url, options)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(response.statusText);
+                }
+                return response.json();
+            })
+            .then(data => {
+                console.log(data);
+            })
+            .catch(error => {
+                console.error("Error:", error);
+            });
+    }
+
+    function setAlbumArtAndText(albumArtPath="", title = "", subtitle = "", secondSubtitle = "", addColourPalette = false)
+    {
+        if (addColourPalette)
+        {
+            url = 'static/assets/palette.png'
+            fetch(url, {cache: 'reload', mode: 'no-cors'})
+                .then(response =>
+                {
+                    if (!response.ok)
+                    {
+                        throw new Error(response.statusText);
+                    }
+                })
+                .then(data => 
+                {
+                    console.log(data);
+                    document.getElementById('colourPalette').src = url;
+                })
+                .catch(error => {
+                    console.error("Error:", error);
+                });
+        } else
+        {
+            document.getElementById('colourPalette').src = "";
+        }
+
         document.getElementById('albumArt').src = albumArtPath;
         document.getElementById('title').textContent = title.toUpperCase();
         document.getElementById('subtitle').textContent = subtitle.toUpperCase();
         document.getElementById('secondsubtitle').textContent = secondSubtitle.toUpperCase();
+
     }
 });
