@@ -9,8 +9,8 @@ body {
     flex-direction: column;
     align-items: center;
     gap: 20px;
-    padding-left: 15px;
-    padding-right: 15px;
+    padding-left: 2vw;
+    padding-right: 2vw;
     position: relative;
 }
 
@@ -56,19 +56,19 @@ body {
     font-family: "Roboto", serif;
     font-weight: 900;
     font-style: normal;
-    font-size: 60px;
+    font-size: 5vw;
   }
 
   .roboto-medium-italic {
     font-family: "Roboto", serif;
     font-weight: 500;
     font-style: italic;
-    font-size: 40px;
+    font-size: 3vw;
   }
 
   .roboto-light {
     font-family: "Roboto", serif;
     font-weight: 300;
     font-style: normal;
-    font-size: 40px;
+    font-size: 3vw;
   }
