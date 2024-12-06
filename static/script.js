@@ -5,43 +5,54 @@ document.addEventListener("DOMContentLoaded", function()
 
     function fetchSongData()
     {
-        fetch('http://localhost:3001/currenttrack')
+        fetch('http://localhost:3001/queue')
             .then(response =>
             {
                 if (!response.ok)
                 {
                     throw new Error(response.statusText)
                 }
-                return response.json()
+                return response.json();
             })
             .then(data =>
             {
-                updateUI(data)
+                updateUI(data);
             })
             .catch(error => console.error('Error fetching song data:', error));
     }
 
     function updateUI(data)
     {
-        var currentTrackContent = data.item;
-        var currentlyPlayingType = data.currently_playing_type;
-        console.log(currentTrackContent)
+        var currentTrackContent = data.currently_playing;
+        var queue = data.queue
+        console.log(data)
+        console.log(currentTrackContent);
         if (currentTrackContent === null || currentTrackContent === undefined)
         {
             console.log('No track is currently playing');
             setAlbumArtAndText("static/assets/spotify.png");
-        } else if (currentlyPlayingType === 'track')
-        {
-            genColourPaletteFromAlbumArtUrl(currentTrackContent.album.images[0].url)
-            setAlbumArtAndText(currentTrackContent.album.images[0].url, currentTrackContent.name, currentTrackContent.artists[0].name, currentTrackContent.album.name, true);
-        } else if (currentlyPlayingType === 'episode')
-        {
-            genColourPaletteFromAlbumArtUrl(currentTrackContent.album.images[0].url)
-            setAlbumArtAndText(currentTrackContent.album.images[0].url, currentTrackContent.name, true);
         } else
         {
-            setAlbumArtAndText("static/assets/spotify.png");
+            genColourPaletteFromAlbumArtUrl(currentTrackContent.album.images[0].url);
+            setAlbumArtAndText(currentTrackContent.album.images[0].url, currentTrackContent.name, currentTrackContent.artists[0].name, currentTrackContent.album.name, true);
         }
+
+        if (queue !== null && queue !== undefined)
+        {
+            showQueue(queue);
+        }
+    }
+
+    function showQueue(queue)
+    {
+        var tracksNamesInQueue =  queue.map(track => track.name).slice(0, 5);
+        const trackListElement = document.getElementById('track-queue');
+        tracksNamesInQueue.forEach( track => {
+            const li = document.createElement('li');
+            li.textContent = track;
+            trackListElement.appendChild(li);
+        });
+
     }
 
     function genColourPaletteFromAlbumArtUrl(albumArtUrl)
@@ -102,6 +113,5 @@ document.addEventListener("DOMContentLoaded", function()
         document.getElementById('title').textContent = title.toUpperCase();
         document.getElementById('subtitle').textContent = subtitle.toUpperCase();
         document.getElementById('secondsubtitle').textContent = secondSubtitle.toUpperCase();
-
     }
 });

@@ -99,7 +99,7 @@ def login():
 
         # redirect user request to spotify using client id and client secret
         state = generate_random_string(16)
-        scope = 'user-read-private user-read-currently-playing'
+        scope = 'user-read-private user-read-currently-playing user-read-playback-state'
         spotify_auth_url = (
             'https://accounts.spotify.com/authorize?'
             'response_type=code'
@@ -155,9 +155,9 @@ def callback():
 
     return render_template('album_art.html')
 
-@app.route('/currenttrack')
-def currenttrack():
-    my_info_url = "https://api.spotify.com/v1/me/player/currently-playing"
+@app.route('/queue')
+def queue():
+    my_info_url = "https://api.spotify.com/v1/me/player/queue"
     headers = {
         "Authorization": f'Bearer {app_cache["TOKEN"]}'
     }
@@ -166,8 +166,8 @@ def currenttrack():
     response_content = response.content.decode()
 
     if not response_content:
-       return json.dumps("No track is playing")
-
+        return json.dumps('queue is empty')
+    
     if response.status_code != 200:
         error_contents = json.loads(response_content)
         error_message = error_contents["error"]["message"]
@@ -179,7 +179,6 @@ def currenttrack():
             response = requests.get(my_info_url, headers=headers)
             response.raise_for_status()
             response_content = response.content.decode()
-
     return json.loads(response_content)
 
 @app.route('/colourpalette', methods=['POST', 'PUT'])
