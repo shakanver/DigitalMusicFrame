@@ -1,3 +1,4 @@
+//pixel dims for testing: 	Width: 3897 pixels Height: 6732 pixels
 document.addEventListener("DOMContentLoaded", function()
 {
     fetchSongData();
@@ -46,6 +47,7 @@ document.addEventListener("DOMContentLoaded", function()
     function showQueue(queue)
     {
         var tracksNamesInQueue =  queue.map(track => track.name).slice(0, 5);
+        document.getElementById('track-queue').innerHTML = '';
         const trackListElement = document.getElementById('track-queue');
         tracksNamesInQueue.forEach( track => {
             const li = document.createElement('li');
