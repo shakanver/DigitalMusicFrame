@@ -1,4 +1,4 @@
-//pixel dims for testing: 	Width: 3897 pixels Height: 6732 pixels
+//pixel dims for testing: 	Width: 3897 pixels Height: 6732 pixels, gives an aspect ratio of 11:19
 document.addEventListener("DOMContentLoaded", function()
 {
     fetchSongData();
@@ -47,14 +47,13 @@ document.addEventListener("DOMContentLoaded", function()
     function showQueue(queue)
     {
         var tracksNamesInQueue =  queue.map(track => track.name).slice(0, 5);
-        document.getElementById('track-queue').innerHTML = '';
-        const trackListElement = document.getElementById('track-queue');
-        tracksNamesInQueue.forEach( track => {
+        const trackListElement = document.getElementById('trackQueue');
+        trackListElement.innerHTML = '';
+        tracksNamesInQueue.forEach(track => {
             const li = document.createElement('li');
             li.textContent = track;
             trackListElement.appendChild(li);
         });
-
     }
 
     function genColourPaletteFromAlbumArtUrl(albumArtUrl)

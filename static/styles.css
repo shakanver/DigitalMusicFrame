@@ -26,6 +26,16 @@ body {
     max-width: 50%;
 }
 
+.track-queue-container {
+    align-self: flex-start;
+    text-align: left;
+    max-width: 50%;
+}
+
+#trackQueue {
+    list-style-type: none;
+}
+
 /* Title and subtitle aligned to the right */
 .text-right {
     align-self: flex-end;
